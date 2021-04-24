@@ -50,17 +50,26 @@ public class App extends Application {
         ImageView redJuan = generateSprite("red.png");
         redJuan.setX(200);
 
-
-
-
-
-
-
-
         StackPane pane = new StackPane(bg,box,redJuan);
+        StackPane pain = new StackPane(bg);
         var scene = new Scene(pane, 800, 500);
+        var sceneee = new Scene(pain, 800,500);
+        stage.setTitle("Ludo Juan");
         stage.setScene(scene);
         stage.show();
+
+        box.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            stage.close();
+            Stage st = new Stage();
+            st.setTitle("ppepep");
+            st.setScene(sceneee);
+            st.show();
+        });
+
     }
 
+    public static void main(String[] args) {
+
+        App.launch();
+    }
 }
