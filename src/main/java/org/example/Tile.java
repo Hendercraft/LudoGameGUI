@@ -31,11 +31,12 @@ public class Tile {
     public void clearContent(Color color){
         if(!this.isSafe()){
             for(int i = 0; i < this.getContent().size();i++){
-                Horse tempHrose = this.getContent().get(i);
-                if(tempHrose.getColor() != color){
-                    tempHrose.setRelativePosition(-1);
-                    tempHrose.setAbsolutePosition(-1);
-                    this.yeetHorse(tempHrose);
+                Horse tempHorse = this.getContent().get(i);
+                if(tempHorse.getColor() != color){
+                    tempHorse.setRelativePosition(-1);
+                    tempHorse.setAbsolutePosition(-1);
+                    Board.getBaseTiles(tempHorse.getColor()).get(tempHorse.getHorseId()).addHorse(tempHorse);
+                    this.yeetHorse(tempHorse);
                 }
             }
         }
