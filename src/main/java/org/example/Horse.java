@@ -1,20 +1,23 @@
 package org.example;
 
-public class Horse {
+import javafx.scene.image.ImageView;
+
+public class Horse extends ImageView {
 
     private Color color;
     private int relativePosition; // from -1 to 51,52-55, -1 : home, 52-56 : arrow
     private int absolutePosition; // 0-51, negative might be the starting position
-    private final int id;
-    //private boolean safe;
-
+    private final int Hid;
 
     public Horse(Color color, int relativePosition, int absolutePosition, int id){
+        super(generatePath(color));
         this.color = color;
         this.relativePosition = relativePosition;
         this.absolutePosition = absolutePosition;
-        //this.safe = false;
-        this.id = id;
+        this.Hid = id;
+        super.setScaleX(0.05);
+        super.setScaleY(0.05);
+
     }
 
 
@@ -23,12 +26,13 @@ public class Horse {
         return color;
     }
 
+
     public int getAbsolutePosition() {
         return absolutePosition;
     }
 
-    public int getId() {
-        return id;
+    public int getHorseId() {
+        return Hid;
     }
 
     public int getRelativePosition() {
@@ -64,10 +68,24 @@ public class Horse {
     public String toString(){
         String output = "";
         output+= "This is a " + this.color + " Horse\n";
-        output+= "It's the " + this.id + " horse\n";
+        output+= "It's the " + this.Hid + " horse\n";
         output+= "He has traveled " + this.relativePosition + " so far\n";
         output+= "He is on the " + this.absolutePosition + " Case\n";
         //output+= "Is he safe ?\n" +this.safe + "\n";
         return  output;
+    }
+
+
+
+    public static String generatePath (Color color){
+        String path;
+        switch (color){
+            case RED -> path = "red.png";
+            case BLUE -> path = "blue.png";
+            case YELLOW -> path = "yellow.png";
+            case GREEN ->  path = "green.png";
+            default -> path = "redb.png";
+        }
+        return path;
     }
 }

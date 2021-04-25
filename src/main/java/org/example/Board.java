@@ -1,8 +1,11 @@
 package org.example;
 
 
+import javafx.event.EventHandler;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Board {
 
@@ -245,24 +248,36 @@ public class Board {
             }
             Horse desiredHorse;
             if(player.getColor() == Color.RED){
-
-                Scanner sc = new Scanner(System.in);
+                int horseID = -1;
+               /* Scanner sc = new Scanner(System.in);
 
                 String input = sc.nextLine();
                 int id = Integer.parseInt(input);
-                desiredHorse = playableHorse.get(id);
-
+                desiredHorse = playableHorse.get(id);*/
+                for (Horse h : playableHorse){
+                    ImageView sprite  = h;
+                    EventHandler<MouseEvent> mouseClick = new EventHandler<>(){
+                        public void handle(javafx.scene.input.MouseEvent event){
+                            //moveHorse(h,dr);
+                            System.out.println("Juan pressed");
+                            for(Horse h : playableHorse) {
+                                h.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+                            }
+                        }
+                    };
+                    sprite.addEventHandler(MouseEvent.MOUSE_CLICKED,mouseClick);
+                }
+                while (horseID == -1){}
+                moveHorse(playableHorse.get(horseID),dr);
             }else{
                 desiredHorse = Bot.botPlay(playableHorse);
                 System.out.println("Bot " + player.getColor());
                 System.out.println("He played :");
                 System.out.println(desiredHorse);
                 System.out.println("press enter to continue");
-                Scanner sc = new Scanner(System.in);
-                sc.nextLine();
+
             }
 
-            moveHorse(desiredHorse, dr);
         }else{
             System.out.println("You have no horse to move, passing turn");
         }
