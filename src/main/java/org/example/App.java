@@ -13,12 +13,11 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
-    Board GameBoard;
-    boolean turnFinished = false;
+    Board GameBoard = new Board(6);
     boolean diceLunched = false;
     int diceResult = 0;
     int currentPlayer = 0;
-
+    int i = 0;
 
     @Override
     public void start(Stage stage) {
@@ -26,38 +25,55 @@ public class App extends Application {
         //Next turn Button
         Button nextTurnButton = new Button("Next Turn");
         nextTurnButton.setOnAction(event -> {
-            if(turnFinished){
+            if(this.GameBoard.isTurnFinished()){
                 if(diceResult != 6 ){
-                    currentPlayer = (currentPlayer + 1 < 3) ? currentPlayer + 1 : 0;
+                    currentPlayer = (currentPlayer + 1 < 4) ? currentPlayer + 1 : 0;
                 }
+                System.out.println("You try to pass the turn");
                 diceLunched = false;
-                turnFinished = false;
+                GameBoard.setTurnFinished(false);
                 diceResult = GameBoard.getD().roll();
                 GameBoard.turn(GameBoard.getPlayers().get(currentPlayer),diceResult);
             }
             event.consume();
         });
         nextTurnButton.setTranslateX(800);
+        nextTurnButton.setScaleX(2);
+        nextTurnButton.setScaleY(2);
 
-        Board GameBoard = new Board(6);
+        //Try
+        Button Try = new Button("MoveHorse");
+        Try.setOnAction(event -> {
+
+
+            GameBoard.getTiles(i+1).addHorse(juan);
+            GameBoard.getTiles(i).yeetHorse(juan);
+            i++;
+            event.consume();
+        });
+        Try.setTranslateX(800);
+        Try.setTranslateY(-400);
+        Try.setScaleX(2);
+        Try.setScaleY(2);
+
         final String boardLoc = "b.png";
 
-        //Image board = new Image(boardLoc,true);
         ImageView bg = new ImageView(boardLoc);
 
         ImageView test = new ImageView("yellow.png");
-        //GameBoard
-        StackPane pain = new StackPane(bg,nextTurnButton);
 
-        /*for (Player player: GameBoard.getPlayers()){
-            for(Horse h : player.getLhorse()){
+        StackPane pain = new StackPane(bg,nextTurnButton,Try);
+
+
+        for(Player player : GameBoard.getPlayers()) {
+            for (Horse h : player.getLhorse()) {
                 pain.getChildren().add(h);
 
             }
         }*/
         pain.getChildren().add(GameBoard.getPlayer(Color.RED).getLhorse().get(0));
         GameBoard.getPlayer(Color.RED).getLhorse().get(0).setTranslateX(50);
-        GameBoard.getPlayer(Color.RED).getLhorse().get(0).setTranslateY(-300);
+        GameBoard.getPlayer(Color.RED).getLhorse().get(0).setTranslateY(-300);*/
 
 
 
@@ -77,7 +93,7 @@ public class App extends Application {
             st.show();
             //GameBoard.gameLoop();
 
-            //GameBoard.turn(GameBoard.getPlayer(Color.RED),6);
+
             System.out.println(bg.getX() + "|-|" + bg.getY());
             event.consume();
         });
@@ -90,10 +106,9 @@ public class App extends Application {
         stage.setScene(StartScene);
 
         stage.show();
-
-
-
-
+        GameBoard.initialiseHorses();
+        diceResult = GameBoard.getD().roll();
+        GameBoard.turn(GameBoard.getPlayer(Color.RED),diceResult);
 
 
        /* yellowJuan.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {

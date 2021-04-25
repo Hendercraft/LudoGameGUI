@@ -15,8 +15,8 @@ public class Horse extends ImageView {
         this.relativePosition = relativePosition;
         this.absolutePosition = absolutePosition;
         this.Hid = id;
-        super.setScaleX(0.05);
-        super.setScaleY(0.05);
+        super.setScaleX(0.02);
+        super.setScaleY(0.02);
 
     }
 

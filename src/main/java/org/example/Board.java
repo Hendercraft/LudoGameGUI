@@ -1,6 +1,7 @@
 package org.example;
 
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -11,16 +12,24 @@ public class Board {
 
     private static final ArrayList<Player> players = generatePlayers();
     private static final ArrayList<Tile> tiles = generateTiles();
-    private static final ArrayList<Tile> redHomeTiles = generateHomeTiles();
-    private static final ArrayList<Tile> blueHomeTiles = generateHomeTiles();
-    private static final ArrayList<Tile> yellowHomeTiles = generateHomeTiles();
-    private static final ArrayList<Tile> greenHomeTiles = generateHomeTiles();
 
+    private static final ArrayList<Tile> redBaseTiles = generateBaseTiles(Color.RED);
+    private static final ArrayList<Tile> blueBaseTiles = generateBaseTiles(Color.BLUE);
+    private static final ArrayList<Tile> yellowBaseTiles = generateBaseTiles(Color.YELLOW);
+    private static final ArrayList<Tile> greenBaseTiles = generateBaseTiles(Color.GREEN);
+    //Home cases (ladder included)
+    private static final ArrayList<Tile> redHomeTiles = generateHomeTiles(Color.RED);
+    private static final ArrayList<Tile> blueHomeTiles = generateHomeTiles(Color.BLUE);
+    private static final ArrayList<Tile> yellowHomeTiles = generateHomeTiles(Color.YELLOW);
+    private static final ArrayList<Tile> greenHomeTiles = generateHomeTiles(Color.GREEN);
+    private boolean turnFinished = false;
+
+    private ArrayList<Horse> playableHorse;
 
     private Dice d;
 
-
-
+    public boolean isTurnFinished(){return this.turnFinished;}
+    public void setTurnFinished(boolean b){ this.turnFinished = b;}
     public Board(){ this.d = new Dice(); }
 
     public Board(int nbFaces){
@@ -266,22 +275,6 @@ public class Board {
         nextTile.clearContent(h.getColor());
     }
 
-
-    /*public void translateHorseHome(Horse h,int dr){
-        ArrayList<Tile> homeTiles = getHomeTiles(h.getColor());
-        Tile currentTile = (h.getAbsolutePosition() != 999) ? tiles.get(h.getAbsolutePosition()) : homeTiles.get(h.getRelativePosition()-51);
-
-        int nextIndex = h.getRelativePosition() + dr - 51;
-        Tile nextTile = homeTiles.get(nextIndex);
-
-        nextTile.addHorse(h);
-        currentTile.yeetHorse(h);
-        h.addStep(dr);
-        h.setAbsolutePosition(999);
-    }
-    */
-
-
     public void moveHorse(Horse h, int dr) {
         if (h.getAbsolutePosition() == -1) { //Checking if the horse hasn't been out yet
             int startingTileIndex = getPlayer(h.getColor()).getStartingTile();
@@ -289,7 +282,7 @@ public class Board {
             startingTile.addHorse(h);
             h.setAbsolutePosition(startingTileIndex);
             h.setRelativePosition(0);
-
+            getBaseTiles(h.getColor()).get(h.getHorseId()).yeetHorse(h);
 
         }else if(h.getRelativePosition() + dr >= 51) { //On Home or going to be on home
 
@@ -317,9 +310,8 @@ public class Board {
     public void turn(Player player,int dr) {
         System.out.println("It's "+ player.getColor() + " Turn");
         System.out.println("You rolled a " + dr);
-        ArrayList <Horse> playableHorse = player.getPlayableHorses(this.d,dr);
+        playableHorse = player.getPlayableHorses(this.d,dr);
         System.out.println("Vous pouvez ainsi jouer :");
-
 
         if(playableHorse.size() != 0) {
             int n = 0;
@@ -331,42 +323,33 @@ public class Board {
             }
             Horse desiredHorse;
             if(player.getColor() == Color.RED){
-                int horseID = -1;
-               /* Scanner sc = new Scanner(System.in);
-
-                String input = sc.nextLine();
-                int id = Integer.parseInt(input);
-                desiredHorse = playableHorse.get(id);*/
                 for (Horse h : playableHorse){
-                    ImageView sprite  = h;
-                    EventHandler<MouseEvent> mouseClick = new EventHandler<>(){
+                    EventHandler<MouseEvent> mouseClick = new EventHandler<MouseEvent>(){
                         public void handle(javafx.scene.input.MouseEvent event){
-                            //moveHorse(h,dr);
-                            System.out.println("Juan pressed");
-                            for(Horse h : playableHorse) {
-                                h.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+                            if(!turnFinished) {
+                                System.out.println("Juan pressed" + dr);
+                                moveHorse(h, dr);
+                                turnFinished = true;
+                                for (Horse h : playableHorse) {
+                                    h.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+                                    System.out.println("SUppose");
+                                }
                             }
+                            event.consume();
                         }
                     };
-                    sprite.addEventHandler(MouseEvent.MOUSE_CLICKED,mouseClick);
+                    h.addEventHandler(MouseEvent.MOUSE_CLICKED,mouseClick);
                 }
-                while (horseID == -1){}
-                moveHorse(playableHorse.get(horseID),dr);
             }else{
                 desiredHorse = Bot.botPlay(playableHorse);
-                System.out.println("Bot " + player.getColor());
-                System.out.println("He played :");
-                System.out.println(desiredHorse);
-                System.out.println("press enter to continue");
-
+                moveHorse(desiredHorse,dr);
+                turnFinished = true;
             }
-
         }else{
             System.out.println("You have no horse to move, passing turn");
+            turnFinished = true;
         }
-        //TODO userSelection
 
-        //if()
     }
 
     public void gameLoop(){
@@ -389,7 +372,23 @@ public class Board {
             System.out.println(p.getColor());
         }
 
-
     } //TODO
+
+    public void initialiseHorses() {
+        /*for (Player p : getPlayers()) {
+            for (Horse h : p.getLhorse()) {
+                ArrayList<Tile> baseTiles = getBaseTiles(p.getColor());
+                baseTiles.get(h.getHorseId()).addHorse(h);
+            }
+        }*/
+        for (Color c : Color.values()){
+            Player currentPlayer = this.getPlayer(c);
+            for (Horse h : currentPlayer.getLhorse()){
+                getBaseTiles(c).get(h.getHorseId()).addHorse(h);
+            }
+
+        }
+    }
+
 
 }
