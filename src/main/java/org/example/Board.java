@@ -24,7 +24,6 @@ public class Board {
     private static final ArrayList<Tile> greenHomeTiles = generateHomeTiles(Color.GREEN);
     private boolean turnFinished = false;
 
-    private ArrayList<Horse> playableHorse;
 
     private Dice d;
 
@@ -444,7 +443,7 @@ public class Board {
     public void turn(Player player,int dr) {
         System.out.println("It's "+ player.getColor() + " Turn");
         System.out.println("You rolled a " + dr);
-        playableHorse = player.getPlayableHorses(this.d,dr);
+        ArrayList<Horse> playableHorse = player.getPlayableHorses(this.d,dr);
         System.out.println("Vous pouvez ainsi jouer :");
 
         if(playableHorse.size() != 0) {
@@ -464,11 +463,11 @@ public class Board {
                                 System.out.println("Juan pressed" + dr);
                                 moveHorse(h, dr);
                                 turnFinished = true;
-                                for (Horse h : playableHorse) {
-                                    h.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
-                                    System.out.println("SUppose");
+                                for (Horse h : playableHorse){
+                                    h.fireEvent(event);
                                 }
                             }
+                            h.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
                             event.consume();
                         }
                     };
