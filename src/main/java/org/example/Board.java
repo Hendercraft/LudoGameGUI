@@ -92,14 +92,10 @@ public class Board {
             double x;
             double y;
 
-            if(i == 24){
+            if(i == 24 || i == 25){
                 x = tiles.get(i-1).getX() - 50.0;
                 y = tiles.get(i-1).getY();
-            }else if(i == 25){
-                x = tiles.get(i-1).getX() - 50.0;
-                y = tiles.get(i-1).getY();
-            }
-            else {
+            }else {
                 x = tiles.get(17).getX() - 50;
                 y = tiles.get(i-1).getY() + 50;
             }
@@ -120,6 +116,39 @@ public class Board {
             double x;
             double y;
 
+            if(i == 37 ||i == 38){
+                x = tiles.get(i-1).getX();
+                y = tiles.get(i-1).getY() - 50;
+            } else {
+                x = tiles.get(i-1).getX() - 50;
+                y = tiles.get(30).getY() -50;
+            }
+            tiles.get(i).setX(x);
+            tiles.get(i).setY(y);
+
+        }
+        //From green starting tile to red starting tile
+
+        for (int i = 40; i<44;i++){
+            double x = tiles.get(i-1).getX() + 50;
+            double y = tiles.get(39).getY();
+            tiles.get(i).setX(x);
+            tiles.get(i).setY(y);
+        }
+
+        for(int i = 44;i < 52;i++){
+            double x;
+            double y;
+            if(i == 50 || i == 51){
+                x = tiles.get(i-1).getX() + 50;
+                y = tiles.get(i-1).getY();
+            }else{
+                x = tiles.get(43).getX() + 50;
+                y = tiles.get(i-1).getY() - 50;
+            }
+
+            tiles.get(i).setX(x);
+            tiles.get(i).setY(y);
         }
 
 
@@ -137,13 +166,109 @@ public class Board {
         return tiles;
     }
 
-    private static ArrayList<Tile> generateHomeTiles(){
+    private static ArrayList<Tile> generateHomeTiles(Color color){
         ArrayList<Tile> homeTiles = new ArrayList<>();
+
         for(int i = 0;i<6;i++){
             homeTiles.add(new Tile());
             homeTiles.get(i).setSafe(true);
         }
+        double x;
+        double y;
+        switch (color){
+            case RED :
+                x = 0;
+                y = -300;
+                homeTiles.get(0).setX(x);
+                homeTiles.get(0).setY(y);
+
+                for(int i = 1;i<6;i++){
+                    y+=50;
+                    homeTiles.get(i).setX(x);
+                    homeTiles.get(i).setY(y);
+                }
+                break;
+            case BLUE:
+                x = 300;
+                y = 0;
+                homeTiles.get(0).setX(x);
+                homeTiles.get(0).setY(y);
+                for(int i = 1;i<6;i++){
+                    x-=50;
+                    homeTiles.get(i).setX(x);
+                    homeTiles.get(i).setY(y);
+                }
+                break;
+            case YELLOW:
+                x = 0;
+                y = 300;
+                homeTiles.get(0).setX(x);
+                homeTiles.get(0).setY(y);
+                for(int i = 1;i<6;i++){
+                    y+=50;
+                    homeTiles.get(i).setX(x);
+                    homeTiles.get(i).setY(y);
+                }
+                break;
+            case GREEN:
+                x = -300;
+                y = 0;
+                homeTiles.get(0).setX(x);
+                homeTiles.get(0).setY(y);
+                for(int i = 1;i<6;i++){
+                    x+=50;
+                    homeTiles.get(i).setX(x);
+                    homeTiles.get(i).setY(y);
+                }
+                break;
+        }
+
         return homeTiles;
+    }
+
+    private static ArrayList<Tile> generateBaseTiles(Color color){
+        ArrayList<Tile> baseTiles = new ArrayList<>();
+        for(int i = 0;i<4;i++){
+            baseTiles.add(new Tile());
+        }
+        double x;
+        double y;
+        switch (color) {
+            case RED -> {
+                x = 150;
+                y = -225;
+                for (int i = 0; i < 4; i++) {
+                    baseTiles.get(i).setX(x + 50 * i);
+                    baseTiles.get(i).setY(y);
+                }
+            }
+            case BLUE -> {
+                x = 150;
+                y = 225;
+                for (int i = 0; i < 4; i++) {
+                    baseTiles.get(i).setX(x + 50 * i);
+                    baseTiles.get(i).setY(y);
+                }
+            }
+            case YELLOW -> {
+                x = -150;
+                y = 225;
+                for (int i = 0; i < 4; i++) {
+                    baseTiles.get(i).setX(x - 50 * i);
+                    baseTiles.get(i).setY(y);
+                }
+            }
+            case GREEN -> {
+                x = -150;
+                y = -225;
+                for (int i = 0; i < 4; i++) {
+                    baseTiles.get(i).setX(x - 50 * i);
+                    baseTiles.get(i).setY(y);
+                }
+            }
+        }
+
+        return baseTiles;
     }
 
     private static ArrayList<Player> generatePlayers(){
@@ -190,6 +315,15 @@ public class Board {
         }return homeTiles;
     }
 
+    public static  ArrayList<Tile> getBaseTiles(Color color){
+        ArrayList<Tile> baseTiles = null;
+        switch (color){
+            case RED -> baseTiles = redBaseTiles;
+            case BLUE -> baseTiles = blueBaseTiles;
+            case GREEN -> baseTiles = greenBaseTiles;
+            case YELLOW -> baseTiles = yellowBaseTiles;
+        }return baseTiles;
+    }
     //setter
 
     public void setD(Dice d) {

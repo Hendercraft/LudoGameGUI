@@ -21,6 +21,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+        Horse juan = GameBoard.getPlayers().get(0).getLhorse().get(0);
+        GameBoard.getTiles(0).addHorse(juan);
 
         //Next turn Button
         Button nextTurnButton = new Button("Next Turn");
@@ -70,8 +72,9 @@ public class App extends Application {
                 pain.getChildren().add(h);
 
             }
-        }*/
-        pain.getChildren().add(GameBoard.getPlayer(Color.RED).getLhorse().get(0));
+        }
+
+        /*pain.getChildren().add(GameBoard.getPlayer(Color.RED).getLhorse().get(0));
         GameBoard.getPlayer(Color.RED).getLhorse().get(0).setTranslateX(50);
         GameBoard.getPlayer(Color.RED).getLhorse().get(0).setTranslateY(-300);*/
 

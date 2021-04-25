@@ -19,7 +19,9 @@ public class Tile {
     }
 
     public void addHorse(Horse juan){
-            this.content.add(juan);
+        this.content.add(juan);
+        juan.setTranslateX(this.x);
+        juan.setTranslateY(this.y);
     }
 
     public void yeetHorse(Horse juan){
