@@ -32,6 +32,89 @@ public class Board {
         for(int i = 0;i<52;i++){
             tiles.add(new Tile());
         }
+        //Starting tiles coordinates RBYG
+        tiles.get(0).setX(50.0);
+        tiles.get(0).setY(-300.0);
+
+        tiles.get(13).setX(300.0);
+        tiles.get(13).setY(50.0);
+
+        tiles.get(26).setX(-50.0);
+        tiles.get(26).setY(300.0);
+
+        tiles.get(39).setX(-300.0);
+        tiles.get(39).setY(-50.0);
+        //From red Starting Tile to blue Starting Tile
+        for(int i = 1; i<5;i++){
+            double x = tiles.get(0).getX();
+            double y = tiles.get(i-1).getY() + 50 ;
+            tiles.get(i).setX(x);
+            tiles.get(i).setY(y);
+
+        }
+
+        for(int i = 5; i < 13;i++){
+            double x;
+            double y;
+
+            if(i == 11) {
+                x = tiles.get(i-1).getX();
+                y = tiles.get(4).getY() + 100.0;
+            }else if(i == 12){
+                x = tiles.get(i-1).getX();
+                y = tiles.get(4).getY() + 150.0;
+            }
+            else{
+                x = tiles.get(i-1).getX() + 50.0;
+                y = tiles.get(4).getY() + 50.0;
+            }
+            tiles.get(i).setX(x);
+            tiles.get(i).setY(y);
+        }
+        //From blue to Starting Tile to yellow
+        for(int i = 14;i<18;i++){
+            double x = tiles.get(i-1).getX() - 50.0;
+            double y = tiles.get(13).getY();
+            tiles.get(i).setX(x);
+            tiles.get(i).setY(y);
+        }
+
+        for(int i = 18;i < 26;i++){
+            double x;
+            double y;
+
+            if(i == 24){
+                x = tiles.get(i-1).getX() - 50.0;
+                y = tiles.get(i-1).getY();
+            }else if(i == 25){
+                x = tiles.get(i-1).getX() - 50.0;
+                y = tiles.get(i-1).getY();
+            }
+            else {
+                x = tiles.get(17).getX() - 50;
+                y = tiles.get(i-1).getY() + 50;
+            }
+            tiles.get(i).setX(x);
+            tiles.get(i).setY(y);
+        }
+
+        //From yellow Starting tile to green Starting tile
+
+        for (int i = 27;i<31;i++){
+            double x = tiles.get(26).getX();
+            double y = tiles.get(i-1).getY() - 50;
+            tiles.get(i).setX(x);
+            tiles.get(i).setY(y);
+        }
+
+        for(int i = 31;i<39;i++){
+            double x;
+            double y;
+
+        }
+
+
+
         // setting safe tiles
         tiles.get(0).setSafe(true);
         tiles.get(8).setSafe(true);

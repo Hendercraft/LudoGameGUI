@@ -7,7 +7,8 @@ public class Tile {
 
     private ArrayList<Horse> content;
     private boolean safe;
-
+    private double x;
+    private double y;
     public Tile() {
         this.safe = false;
         this.content = new ArrayList<Horse>();
@@ -56,6 +57,22 @@ public class Tile {
              output += h.toString();
         }
         return output;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 
     public int getNumberOfHorseOfColor(Color color){

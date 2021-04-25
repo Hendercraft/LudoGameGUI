@@ -62,7 +62,7 @@ public class Horse extends ImageView {
 
     //Checker
 
-    //public boolean isSafe() {return safe;}
+
 
 
     public String toString(){

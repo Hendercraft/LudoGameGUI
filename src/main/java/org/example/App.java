@@ -7,9 +7,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.File;
-
-
 
 /**
  * JavaFX App
