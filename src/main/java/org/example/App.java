@@ -39,7 +39,7 @@ public class App extends Application {
             }
             event.consume();
         });
-        nextTurnButton.setTranslateX(800);
+        nextTurnButton.setTranslateX(550);
         nextTurnButton.setScaleX(2);
         nextTurnButton.setScaleY(2);
 
@@ -53,7 +53,7 @@ public class App extends Application {
             i++;
             event.consume();
         });
-        Try.setTranslateX(800);
+        Try.setTranslateX(550);
         Try.setTranslateY(-400);
         Try.setScaleX(2);
         Try.setScaleY(2);
