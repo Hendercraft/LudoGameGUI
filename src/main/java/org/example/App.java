@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -24,6 +25,10 @@ public class App extends Application {
         Horse juan = GameBoard.getPlayers().get(0).getLhorse().get(0);
         GameBoard.getTiles(0).addHorse(juan);
 
+        //Dice display
+        Text diceDisplay = new Text("Welcome");
+        diceDisplay.setTranslateX(550);
+        diceDisplay.setTranslateY(-150);
         //Next turn Button
         Button nextTurnButton = new Button("Next Turn");
         nextTurnButton.setOnAction(event -> {
@@ -35,6 +40,7 @@ public class App extends Application {
                 diceLunched = false;
                 GameBoard.setTurnFinished(false);
                 diceResult = GameBoard.getD().roll();
+                diceDisplay.setText(GameBoard.getPlayers().get(currentPlayer).getColor() + " roll a " + diceResult);
                 GameBoard.turn(GameBoard.getPlayers().get(currentPlayer),diceResult);
             }
             event.consume();
@@ -46,8 +52,6 @@ public class App extends Application {
         //Try
         Button Try = new Button("MoveHorse");
         Try.setOnAction(event -> {
-
-
             GameBoard.getTiles(i+1).addHorse(juan);
             GameBoard.getTiles(i).yeetHorse(juan);
             i++;
@@ -64,7 +68,7 @@ public class App extends Application {
 
         ImageView test = new ImageView("yellow.png");
 
-        StackPane pain = new StackPane(bg,nextTurnButton,Try);
+        StackPane pain = new StackPane(bg,nextTurnButton,Try,diceDisplay);
 
 
         for(Player player : GameBoard.getPlayers()) {
@@ -91,11 +95,9 @@ public class App extends Application {
             System.out.println("Hello World!");
             stage.close();
             Stage st = new Stage();
-            st.setTitle("ppepep");
+            st.setTitle("Ludo Game Gimp Edition");
             st.setScene(Game);
             st.show();
-            //GameBoard.gameLoop();
-
 
             System.out.println(bg.getX() + "|-|" + bg.getY());
             event.consume();
@@ -111,6 +113,7 @@ public class App extends Application {
         stage.show();
         GameBoard.initialiseHorses();
         diceResult = GameBoard.getD().roll();
+        diceDisplay.setText("Red roll a " + diceResult);
         GameBoard.turn(GameBoard.getPlayer(Color.RED),diceResult);
 
 
