@@ -51,6 +51,23 @@ public class Player {
         }return result;
     }
 
+    public static int identifyStartingTile(Color color) {
+        int out = -1;
+        switch (color){
+            case RED -> out = 0;
+            case BLUE -> out = 13;
+            case YELLOW -> out = 26;
+            case GREEN ->  out = 39;
+        }
+        return out;
+    }
+
+    //Setter
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    //
     //Check if the player has put all his Horse on it's finishing tile
     public boolean isFinished(){
         if (!this.finished){
@@ -64,29 +81,6 @@ public class Player {
         }
         return this.finished;
     }
-
-    //Setter
-    public void setColor(Color color) {
-        this.color = color;
-    }
-    //Modifier
-    public void moveHorse(Horse h, int steps){
-        h.addStep(steps);
-    }
-
-
-
-    public static int identifyStartingTile(Color color) {
-        int out = -1;
-        switch (color){
-            case RED -> out = 0;
-            case BLUE -> out = 13;
-            case YELLOW -> out = 26;
-            case GREEN ->  out = 39;
-        }
-        return out;
-    }
-
 
     public String toString(){
         String output = "";
