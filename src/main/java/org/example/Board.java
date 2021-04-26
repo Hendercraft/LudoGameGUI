@@ -204,7 +204,7 @@ public class Board {
                 homeTiles.get(0).setX(x);
                 homeTiles.get(0).setY(y);
                 for(int i = 1;i<6;i++){
-                    y+=50;
+                    y-=50;
                     homeTiles.get(i).setX(x);
                     homeTiles.get(i).setY(y);
                 }

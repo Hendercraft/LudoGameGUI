@@ -20,7 +20,7 @@ public class Tile {
 
     public void addHorse(Horse juan){
         this.content.add(juan);
-        if(this.getNumberOfHorseOfColor(juan.getColor()) > 1){
+        if(this.getSize() > 1){
             for(int i = 0; i < this.content.size(); i++){
                 Horse h = this.content.get(i);
                 h.setScaleX(0.015);
