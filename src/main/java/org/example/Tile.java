@@ -20,8 +20,23 @@ public class Tile {
 
     public void addHorse(Horse juan){
         this.content.add(juan);
-        juan.setTranslateX(this.x);
-        juan.setTranslateY(this.y);
+        if(this.getNumberOfHorseOfColor(juan.getColor()) > 1){
+            for(int i = 0; i < this.content.size(); i++){
+                Horse h = this.content.get(i);
+                h.setScaleX(0.015);
+                h.setScaleY(0.015);
+                double y = this.y - i*10;
+                double x = this.x;
+                h.setTranslateX(x);
+                h.setTranslateY(y);
+            }
+        }else{
+            juan.setScaleX(0.02);
+            juan.setScaleY(0.02);
+            juan.setTranslateX(this.x);
+            juan.setTranslateY(this.y);
+        }
+
     }
 
     public void yeetHorse(Horse juan){

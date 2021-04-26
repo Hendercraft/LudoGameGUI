@@ -3,9 +3,12 @@ package org.example;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 
@@ -31,8 +34,18 @@ public class App extends Application {
         diceDisplay.setTranslateY(-150);
         //Next turn Button
         Button nextTurnButton = new Button("Next Turn");
+        //Initialization of the text box when a player win
+        Text winText = new Text("");
+        winText.setTranslateX(0);
+        winText.setTranslateY(-450);
+
         nextTurnButton.setOnAction(event -> {
             if(this.GameBoard.isTurnFinished()){
+                if(GameBoard.getPlayers().get(currentPlayer).isFinished()){
+                    winText.setText(GameBoard.getPlayers().get(currentPlayer).getColor() + " won the game");
+                    winText.setFont(new Font("Arial",24));
+                    winText.setFill(javafx.scene.paint.Color.BLACK);
+                }
                 if(diceResult != 6 ){
                     currentPlayer = (currentPlayer + 1 < 4) ? currentPlayer + 1 : 0;
                 }
@@ -43,6 +56,7 @@ public class App extends Application {
                 diceDisplay.setText(GameBoard.getPlayers().get(currentPlayer).getColor() + " roll a " + diceResult);
                 GameBoard.turn(GameBoard.getPlayers().get(currentPlayer),diceResult);
             }
+
             event.consume();
         });
         nextTurnButton.setTranslateX(550);
@@ -63,7 +77,6 @@ public class App extends Application {
         Try.setScaleY(2);
 
         final String boardLoc = "b.png";
-
         ImageView bg = new ImageView(boardLoc);
 
         ImageView test = new ImageView("yellow.png");

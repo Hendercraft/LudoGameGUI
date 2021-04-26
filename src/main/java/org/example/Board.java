@@ -399,13 +399,13 @@ public class Board {
             nextTile = homeTiles.get(nextTilePos);
             nextTilePos = 999;
         }
-
+        nextTile.clearContent(h.getColor());
         nextTile.addHorse(h);
         currentTile.yeetHorse(h);
         h.setAbsolutePosition(nextTilePos);
         h.addStep(dr);
 
-        nextTile.clearContent(h.getColor());
+
     }
 
     public void moveHorse(Horse h, int dr) {
