@@ -440,7 +440,7 @@ public class Board {
 
     }
 
-    public void turn(Player player,int dr) {
+    public void turn(Player player,int dr, boolean multiPlayer) {
         System.out.println("It's "+ player.getColor() + " Turn");
         System.out.println("You rolled a " + dr);
         ArrayList<Horse> playableHorse = player.getPlayableHorses(this.d,dr);
@@ -455,7 +455,7 @@ public class Board {
                 n++;
             }
             Horse desiredHorse;
-            if(player.getColor() == Color.RED){
+            if(player.getColor() == Color.RED || multiPlayer){
                 for (Horse h : playableHorse){
                     EventHandler<MouseEvent> mouseClick = new EventHandler<MouseEvent>(){
                         public void handle(javafx.scene.input.MouseEvent event){
@@ -485,27 +485,6 @@ public class Board {
 
     }
 
-    public void gameLoop(){
-        ArrayList<Player> winOrder = new ArrayList<>();
-        while (winOrder.size() != 3){
-            for (Player player : getPlayers()){
-                int dR = getD().getNbFaces();
-                while (dR == getD().getNbFaces() && !player.isFinished()){
-                    dR = getD().roll();
-                    turn(player, dR);
-                }
-                if (!winOrder.contains(player) && player.isFinished()){
-                    winOrder.add(player);
-                }
-            }
-        }
-
-        System.out.println("The game is finshed here's the result : ");
-        for (Player p : winOrder){
-            System.out.println(p.getColor());
-        }
-
-    } //TODO
 
     public void initialiseHorses() {
         /*for (Player p : getPlayers()) {

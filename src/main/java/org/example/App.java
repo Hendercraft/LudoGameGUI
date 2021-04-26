@@ -21,13 +21,10 @@ public class App extends Application {
     boolean diceLunched = false;
     int diceResult = 0;
     int currentPlayer = 0;
-    int i = 0;
+    boolean multiPlayer;
 
     @Override
     public void start(Stage stage) {
-        Horse juan = GameBoard.getPlayers().get(0).getLhorse().get(0);
-        GameBoard.getTiles(0).addHorse(juan);
-
         //Dice display
         Text diceDisplay = new Text("Welcome");
         diceDisplay.setTranslateX(550);
@@ -49,12 +46,13 @@ public class App extends Application {
                 if(diceResult != 6 ){
                     currentPlayer = (currentPlayer + 1 < 4) ? currentPlayer + 1 : 0;
                 }
-                System.out.println("You try to pass the turn");
+                System.out.println("You finished your turn");
                 diceLunched = false;
                 GameBoard.setTurnFinished(false);
                 diceResult = GameBoard.getD().roll();
                 diceDisplay.setText(GameBoard.getPlayers().get(currentPlayer).getColor() + " roll a " + diceResult);
-                GameBoard.turn(GameBoard.getPlayers().get(currentPlayer),diceResult);
+                GameBoard.turn(GameBoard.getPlayers().get(currentPlayer),diceResult,multiPlayer);
+
             }
 
             event.consume();
@@ -63,26 +61,13 @@ public class App extends Application {
         nextTurnButton.setScaleX(2);
         nextTurnButton.setScaleY(2);
 
-        //Try
-        Button Try = new Button("MoveHorse");
-        Try.setOnAction(event -> {
-            GameBoard.getTiles(i+1).addHorse(juan);
-            GameBoard.getTiles(i).yeetHorse(juan);
-            i++;
-            event.consume();
-        });
-        Try.setTranslateX(550);
-        Try.setTranslateY(-400);
-        Try.setScaleX(2);
-        Try.setScaleY(2);
-
+        //Board image view
         final String boardLoc = "b.png";
         ImageView bg = new ImageView(boardLoc);
 
-        ImageView test = new ImageView("yellow.png");
 
-        StackPane pain = new StackPane(bg,nextTurnButton,Try,diceDisplay);
-
+        //Initialization of the StackPane
+        StackPane pain = new StackPane(bg,nextTurnButton,diceDisplay,winText);
 
         for(Player player : GameBoard.getPlayers()) {
             for (Horse h : player.getLhorse()) {
@@ -91,54 +76,46 @@ public class App extends Application {
             }
         }
 
-        /*pain.getChildren().add(GameBoard.getPlayer(Color.RED).getLhorse().get(0));
-        GameBoard.getPlayer(Color.RED).getLhorse().get(0).setTranslateX(50);
-        GameBoard.getPlayer(Color.RED).getLhorse().get(0).setTranslateY(-300);*/
-
-
-
-
-        var Game = new Scene(pain, 800,500);
+       //Initialization of the scene
+        var Game = new Scene(pain, 1500,1500);
 
 
         //Start scene
 
-        Button btn = new Button("Start the game");
-        btn.setOnAction(event -> {
-            System.out.println("Hello World!");
+        Button btnSinglePlayer = new Button("Single Player");
+        btnSinglePlayer.setOnAction(event -> {
             stage.close();
             Stage st = new Stage();
-            st.setTitle("Ludo Game Gimp Edition");
+            st.setTitle("Ludo Game Gimp Edition : Single Player");
+            multiPlayer = false;
             st.setScene(Game);
             st.show();
-
-            System.out.println(bg.getX() + "|-|" + bg.getY());
             event.consume();
         });
 
+        Button btnMultiPlayers = new Button("Multi Player");
+        btnMultiPlayers.setOnAction(event -> {
+            stage.close();
+            Stage st = new Stage();
+            st.setTitle("Ludo Game Gimp Edition : Multi Player");
+            st.setScene(Game);
+            multiPlayer = true;
+            st.show();
+            event.consume();
 
+        });
+        btnMultiPlayers.setTranslateY(-50);
 
-        StackPane startingPane = new StackPane(btn);
+        StackPane startingPane = new StackPane(btnSinglePlayer,btnMultiPlayers);
         var StartScene = new Scene(startingPane, 800, 500);
         stage.setTitle("Welcome !!");
         stage.setScene(StartScene);
 
         stage.show();
-        GameBoard.initialiseHorses();
+        GameBoard.initialiseHorses(); //Put horses on their base tiles
         diceResult = GameBoard.getD().roll();
         diceDisplay.setText("Red roll a " + diceResult);
-        GameBoard.turn(GameBoard.getPlayer(Color.RED),diceResult);
-
-
-       /* yellowJuan.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            stage.close();
-            Stage st = new Stage();
-            st.setTitle("ppepep");
-            st.setScene(Game);
-            st.show();
-        });
-        */
-
+        GameBoard.turn(GameBoard.getPlayer(Color.RED),diceResult,multiPlayer);
 
     }
 
